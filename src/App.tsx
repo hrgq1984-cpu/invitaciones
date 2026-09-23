@@ -20,6 +20,8 @@ import {
 import { requests, statusLabels, templates } from "./data";
 import type { InvitationRequest } from "./types";
 import InvitationView from "./InvitationView";
+import PublicHome from "./PublicHome";
+import ClientDashboard from "./ClientDashboard";
 
 const navItems = [
   { label: "Resumen", icon: LayoutGrid, active: true },
@@ -588,14 +590,13 @@ function NewRequestModal({ templates, onClose, onSubmit }: { templates: typeof i
 }
 
 function App() {
-  const invitationMatch = window.location.pathname.match(
-    /^\/invitacion\/([^/]+)/,
-  );
-  return invitationMatch ? (
-    <InvitationView slug={invitationMatch[1]} />
-  ) : (
-    <Dashboard />
-  );
+  const pathname = window.location.pathname.replace(/\/+$/, '') || '/';
+  const invitationMatch = pathname.match(/^\/invitacion\/([^/]+)/);
+  if (invitationMatch) return <InvitationView slug={invitationMatch[1]} />;
+  if (pathname === '/') return <PublicHome />;
+  if (pathname.toLowerCase() === '/maximo1822') return <Dashboard />;
+  const clientSlug = pathname.slice(1);
+  return <ClientDashboard slug={clientSlug} />;
 }
 
 export default App;
