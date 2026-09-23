@@ -1,4 +1,4 @@
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? '/.netlify/functions'
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? '/api'
 
 export async function requestApi<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${apiBaseUrl}${path}`, {
