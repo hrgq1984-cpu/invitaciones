@@ -1,0 +1,262 @@
+Analiza en profundidad los archivos C:\Users\PC-HUGO\Desktop\PANEL\invitaciones\AGENTS.md
+                                    C:\Users\PC-HUGO\Desktop\PANEL\invitaciones\SYSTEM_SPECIFICATIONS.md
+
+Estos archivos corresponden a una guía, referencia o proyecto desarrollado anteriormente y deben utilizarse únicamente como base conceptual y funcional.
+
+Quiero que desarrolles un **nuevo sistema de invitaciones digitales**, tomando como referencia las funcionalidades, estructura y flujo de trabajo que encuentres en los archivos, pero adaptándolo y mejorándolo según las necesidades de un sistema moderno, escalable y preparado para producción.
+
+### 1. Análisis inicial
+
+Antes de comenzar a desarrollar:
+
+* Analiza todos los archivos adjuntos.
+* Identifica las funcionalidades principales del proyecto de referencia.
+* Identifica su arquitectura, flujo de trabajo, tipos de usuarios, pantallas, formularios y procesos.
+* Determina qué funcionalidades conviene mantener, cuáles mejorar y cuáles deberían incorporarse.
+* No copies código innecesariamente: utiliza la documentación como referencia para construir una solución propia y mejor estructurada.
+* Si encuentras información incompleta o ambigua, toma decisiones técnicas razonables y documenta esas decisiones.
+
+### 2. Objetivo del nuevo sistema
+
+El objetivo es crear una plataforma profesional para la **creación, gestión, personalización, aprobación y publicación de invitaciones digitales**.
+
+El sistema debe permitir administrar todo el ciclo de una invitación, desde la solicitud inicial del cliente hasta su aprobación y publicación final.
+
+La arquitectura debe estar pensada para que posteriormente pueda utilizarse con un dominio propio y pueda crecer en funcionalidades y cantidad de usuarios.
+
+### 3. Tecnología
+
+Selecciona el lenguaje, framework y arquitectura que consideres más adecuados para desarrollar invitaciones digitales modernas, priorizando:
+
+* Excelente rendimiento.
+* Diseño responsive, especialmente para teléfonos móviles.
+* Facilidad para crear diseños visualmente atractivos.
+* Código mantenible y escalable.
+* Buen SEO cuando corresponda.
+* Facilidad para generar múltiples modelos o plantillas de invitaciones.
+* Animaciones y transiciones modernas sin afectar el rendimiento.
+* Seguridad.
+* Facilidad de mantenimiento y actualización.
+* Compatibilidad con despliegue en Netlify.
+* Integración sencilla con Google Apps Script.
+
+Justifica brevemente las principales decisiones tecnológicas antes de implementarlas.
+
+### 4. Backend y almacenamiento
+
+Quiero utilizar **Google Drive y Google Sheets como infraestructura de almacenamiento y gestión**, evitando inicialmente una base de datos tradicional.
+
+#### Google Drive
+
+Utilizar Google Drive para almacenar:
+
+* Imágenes de las invitaciones.
+* Fotografías de los eventos.
+* Archivos multimedia necesarios.
+* Recursos gráficos.
+* Otros archivos asociados a cada solicitud o invitación.
+
+La estructura de carpetas debe estar organizada y ser fácil de administrar.
+
+Por ejemplo, puede existir una estructura similar a:
+
+* `/Invitaciones`
+
+  * `/Solicitudes`
+  * `/Aprobadas`
+  * `/Publicadas`
+  * `/Imagenes`
+  * `/Plantillas`
+
+La estructura definitiva debe ser diseñada según las necesidades reales del sistema.
+
+#### Google Sheets
+
+Utilizar Google Sheets para gestionar la información del sistema, incluyendo, como mínimo:
+
+* Solicitudes de clientes.
+* Datos de los clientes.
+* Datos del evento.
+* Tipo de invitación.
+* Plantilla seleccionada.
+* Estado de la solicitud.
+* Compras.
+* Pagos, si corresponde.
+* Aprobaciones.
+* Cambios solicitados.
+* Estado de producción.
+* Fecha de creación.
+* Fecha de entrega.
+* URL de la invitación.
+* Información necesaria para la administración.
+
+Diseña las hojas y columnas de manera organizada, evitando duplicación innecesaria de información.
+
+### 5. Google Apps Script
+
+Utiliza **Google Apps Script como capa de comunicación entre el sistema web, Google Sheets y Google Drive**.
+
+Apps Script deberá encargarse, según corresponda, de:
+
+* Recibir solicitudes desde la aplicación.
+* Registrar información en Google Sheets.
+* Consultar información.
+* Actualizar estados.
+* Crear y organizar carpetas en Google Drive.
+* Gestionar archivos e imágenes.
+* Obtener URLs de archivos.
+* Registrar compras y solicitudes.
+* Gestionar aprobaciones.
+* Actualizar información de las invitaciones.
+* Proporcionar endpoints/API para que el frontend pueda comunicarse con Google.
+* Implementar validaciones y controles básicos de seguridad.
+
+Diseña esta integración de manera que sea clara, modular y fácil de mantener.
+
+### 6. Flujo general del sistema
+
+Diseña un flujo completo similar a:
+
+**Cliente → Solicitud → Selección de invitación → Carga de información → Compra → Producción → Revisión → Aprobación → Publicación → Invitación digital**
+
+El sistema debe permitir controlar claramente en qué etapa se encuentra cada solicitud.
+
+Considera diferentes estados, por ejemplo:
+
+* Nueva solicitud.
+* Pendiente de pago.
+* Pago recibido.
+* En producción.
+* Pendiente de información.
+* Pendiente de aprobación.
+* Correcciones solicitadas.
+* Aprobada.
+* Publicada.
+* Finalizada.
+
+Estos estados son ejemplos. Analiza los archivos de referencia y define una estructura más adecuada si es necesario.
+
+### 7. Panel de administración
+
+Desarrolla un panel administrativo desde el cual sea posible:
+
+* Ver solicitudes.
+* Filtrar solicitudes por estado.
+* Buscar clientes.
+* Consultar información de cada evento.
+* Gestionar imágenes.
+* Cambiar estados.
+* Revisar compras.
+* Gestionar aprobaciones.
+* Ver las invitaciones publicadas.
+* Editar información.
+* Consultar URLs.
+* Administrar las diferentes plantillas o modelos de invitaciones.
+
+El panel debe ser claro, moderno y responsive.
+
+### 8. Invitaciones digitales
+
+La parte pública del sistema debe permitir generar invitaciones digitales visualmente atractivas.
+
+Las invitaciones deben:
+
+* Ser completamente responsive.
+* Estar optimizadas principalmente para teléfonos móviles.
+* Tener un diseño moderno.
+* Permitir diferentes estilos y plantillas.
+* Utilizar imágenes almacenadas en Google Drive.
+* Mostrar la información específica de cada evento.
+* Permitir incorporar animaciones y efectos visuales cuando sean apropiados.
+* Tener URLs individuales.
+* Poder compartirse fácilmente mediante WhatsApp y redes sociales.
+* Estar preparadas para utilizar posteriormente un dominio propio.
+
+La arquitectura debe permitir agregar nuevas plantillas sin tener que modificar completamente el sistema.
+
+### 9. GitHub y Netlify
+
+Utiliza **GitHub como repositorio del proyecto** y **Netlify para el despliegue**.
+
+Durante la primera etapa:
+
+1. Crear y organizar correctamente el proyecto.
+2. Prepararlo para GitHub.
+3. Configurar el proyecto para desplegarlo en Netlify.
+4. Utilizar variables de entorno para toda información sensible o configuración que no deba estar directamente en el código.
+5. Realizar pruebas utilizando la URL temporal proporcionada por Netlify.
+6. Dejar la arquitectura preparada para posteriormente conectar un dominio definitivo.
+
+No es necesario configurar todavía el dominio final.
+
+### 10. Seguridad
+
+Presta especial atención a la seguridad.
+
+No expongas en el frontend:
+
+* Credenciales.
+* Tokens privados.
+* Claves secretas.
+* Información sensible.
+* Configuraciones administrativas.
+
+Utiliza variables de entorno y Apps Script para las operaciones que deban ejecutarse del lado del servidor.
+
+Define también controles para evitar solicitudes no autorizadas, manipulación de datos y acceso indebido a información administrativa.
+
+### 11. Calidad del código
+
+Quiero un proyecto:
+
+* Modular.
+* Ordenado.
+* Escalable.
+* Fácil de mantener.
+* Con componentes reutilizables.
+* Con nombres claros.
+* Con documentación suficiente.
+* Sin código duplicado innecesariamente.
+* Preparado para futuras funcionalidades.
+
+Evita soluciones improvisadas o estructuras difíciles de mantener.
+
+### 12. Forma de trabajo
+
+Trabaja en etapas.
+
+**Etapa 1 — Análisis**
+Analiza los archivos adjuntos y determina qué debe construirse.
+
+**Etapa 2 — Arquitectura**
+Define la arquitectura completa del sistema, tecnologías, estructura de carpetas, modelo de datos, integración con Google Drive, Google Sheets y Apps Script.
+
+**Etapa 3 — Diseño**
+Define las principales pantallas, flujo de navegación y experiencia de usuario.
+
+**Etapa 4 — Desarrollo**
+Implementa el frontend, backend/integraciones, panel administrativo e invitaciones digitales.
+
+**Etapa 5 — Integración**
+Conecta Google Sheets, Google Drive y Google Apps Script.
+
+**Etapa 6 — Pruebas**
+Prueba los principales flujos y corrige errores.
+
+**Etapa 7 — GitHub**
+Deja el proyecto correctamente organizado y listo para trabajar con GitHub.
+
+**Etapa 8 — Netlify**
+Configura el despliegue y deja una versión funcional para pruebas.
+
+### Importante
+
+No comiences simplemente copiando el proyecto de referencia.
+
+Primero **analiza los archivos adjuntos, comprende el sistema y propón una arquitectura mejorada**.
+
+Quiero que el resultado sea un sistema propio, moderno y profesional, tomando los archivos adjuntos como referencia funcional y visual.
+
+Si detectas que alguna decisión de arquitectura puede generar problemas futuros, indícalo antes de implementarla y propone una alternativa.
+
+El objetivo final es tener una plataforma funcional de invitaciones digitales que pueda probarse inicialmente mediante **GitHub + Netlify + Google Drive + Google Sheets + Google Apps Script**, y que posteriormente pueda pasar a producción con un **dominio propio**.
