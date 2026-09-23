@@ -24,6 +24,13 @@ export interface InvitationRequest {
   dueDate: string
   hasPayment: boolean
   slug?: string
+  eventDate?: string
+  eventTime?: string
+  venue?: string
+  address?: string
+  mapUrl?: string
+  description?: string
+  giftAlias?: string
 }
 
 export interface TemplateDefinition {

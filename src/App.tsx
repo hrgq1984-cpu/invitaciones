@@ -38,6 +38,7 @@ function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showRequestForm, setShowRequestForm] = useState(false);
   const [notice, setNotice] = useState("");
+  const [activeView, setActiveView] = useState("Resumen");
 
   const filteredRequests = useMemo(
     () =>
@@ -99,6 +100,16 @@ function Dashboard() {
     showNotice("Solicitud creada correctamente.");
   }
 
+  function updateSelectedStatus(status: InvitationRequest["status"]) {
+    setRequestItems((current) => current.map((request) => request.id === selectedRequest.id ? { ...request, status } : request));
+    showNotice("Estado del proyecto actualizado.");
+  }
+
+  function togglePayment() {
+    setRequestItems((current) => current.map((request) => request.id === selectedRequest.id ? { ...request, hasPayment: !request.hasPayment } : request));
+    showNotice(selectedRequest.hasPayment ? "Pago marcado como pendiente." : "Pago marcado como recibido.");
+  }
+
   return (
     <div className="app-shell">
       <aside className={`sidebar ${sidebarOpen ? "sidebar-open" : ""}`}>
@@ -130,9 +141,10 @@ function Dashboard() {
         <nav>
           {navItems.map(({ label, icon: Icon, active, count }) => (
             <button
-              className={`nav-item ${active ? "active" : ""}`}
+              className={`nav-item ${activeView === label ? "active" : ""}`}
               key={label}
               onClick={() => {
+                setActiveView(label);
                 setStatusFilter("ALL");
                 setQuery("");
                 showNotice(
@@ -216,6 +228,24 @@ function Dashboard() {
           </div>
         </header>
         <div className="page-wrap">
+          {activeView !== "Resumen" ? (
+            <AdminSection
+              view={activeView}
+              requests={requestItems}
+              templates={templates}
+              onCreate={() => setShowRequestForm(true)}
+              onSelect={(id) => {
+                setSelectedId(id);
+                setActiveView("Resumen");
+              }}
+              onStatusChange={(id, status) => {
+                setRequestItems((current) => current.map((request) => request.id === id ? { ...request, status } : request));
+                showNotice("Estado actualizado correctamente.");
+              }}
+              onNotice={showNotice}
+            />
+          ) : (
+          <>
           <section className="page-heading">
             <div>
               <p className="eyebrow">MIÉRCOLES, 23 DE SEPTIEMBRE</p>
@@ -371,6 +401,10 @@ function Dashboard() {
                   <b>{selectedTemplate.name}</b>
                 </div>
               </div>
+              <div className="project-controls">
+                <label>Estado<select value={selectedRequest.status} onChange={(event) => updateSelectedStatus(event.target.value as InvitationRequest["status"])}>{Object.entries(statusLabels).map(([key, label]) => <option key={key} value={key}>{label}</option>)}</select></label>
+                <button className={`payment-toggle ${selectedRequest.hasPayment ? "is-paid" : ""}`} onClick={togglePayment}>{selectedRequest.hasPayment ? "Pago recibido" : "Marcar pago recibido"}</button>
+              </div>
               <button className="secondary-button" onClick={openInvitation}>
                 Abrir espacio de trabajo <ArrowUpRight size={16} />
               </button>
@@ -436,6 +470,8 @@ function Dashboard() {
               </div>
             </div>
           </section>
+          </>
+          )}
         </div>
         {notice && <div className="toast" role="status">{notice}</div>}
         {showRequestForm && <NewRequestModal templates={templates} onClose={() => setShowRequestForm(false)} onSubmit={createRequest} />}
@@ -468,6 +504,51 @@ function Metric({
     </div>
   );
 }
+
+function AdminSection({
+  view,
+  requests: requestItems,
+  templates: templateItems,
+  onCreate,
+  onSelect,
+  onStatusChange,
+  onNotice,
+}: {
+  view: string;
+  requests: typeof requests;
+  templates: typeof templates;
+  onCreate: () => void;
+  onSelect: (id: string) => void;
+  onStatusChange: (id: string, status: InvitationRequest["status"]) => void;
+  onNotice: (message: string) => void;
+}) {
+  const [query, setQuery] = useState("");
+  const [status, setStatus] = useState<"ALL" | InvitationRequest["status"]>("ALL");
+  const visibleRequests = requestItems.filter((request) => {
+    const matchesQuery = `${request.clientName} ${request.eventName} ${request.id}`.toLowerCase().includes(query.toLowerCase());
+    return matchesQuery && (status === "ALL" || request.status === status);
+  });
+
+  if (view === "Clientes") {
+    const clients = Array.from(new Map(requestItems.map((request) => [request.clientName, request])).values());
+    return <section className="admin-section"><AdminSectionHeader eyebrow="RELACIÓN CON CLIENTES" title="Clientes" copy="Consulta las personas asociadas a tus solicitudes." action="Nueva solicitud" onAction={onCreate} /><div className="admin-card-grid">{clients.map((client) => <article className="admin-card" key={client.clientName}><span className="avatar avatar-olive">{client.clientName.slice(0, 2).toUpperCase()}</span><div><h3>{client.clientName}</h3><p>{client.eventName}</p><small>{client.eventType} · {client.id}</small></div><button className="text-button" onClick={() => onSelect(client.id)}>Ver solicitud <ArrowUpRight size={14} /></button></article>)}</div></section>;
+  }
+
+  if (view === "Calendario") {
+    return <section className="admin-section"><AdminSectionHeader eyebrow="PLANIFICACIÓN" title="Calendario de entregas" copy="Organiza las próximas fechas de producción y publicación." action="Nueva solicitud" onAction={onCreate} /><div className="calendar-list">{requestItems.slice().sort((a, b) => a.dueDate.localeCompare(b.dueDate)).map((request) => <button className="calendar-row" key={request.id} onClick={() => onSelect(request.id)}><span className="calendar-day">{request.dueDate.split(" ")[0]}</span><span><b>{request.clientName}</b><small>{request.eventName} · {statusLabels[request.status]}</small></span><ArrowUpRight size={16} /></button>)}</div></section>;
+  }
+
+  if (view === "Plantillas") {
+    return <section className="admin-section"><AdminSectionHeader eyebrow="CATÁLOGO DE DISEÑO" title="Plantillas" copy="Modelos disponibles para nuevas invitaciones." action="Nueva solicitud" onAction={onCreate} /><div className="admin-template-grid">{templateItems.map((template) => <button className="admin-template-card" key={template.id} onClick={() => onNotice(`${template.name}: plantilla seleccionada para previsualización.`)}><div className="template-thumb" style={{ background: template.preview }}><span>{template.category}</span></div><b>{template.name}</b><small>{template.mood}</small></button>)}</div></section>;
+  }
+
+  return <section className="admin-section"><AdminSectionHeader eyebrow="OPERACIÓN" title="Solicitudes" copy="Controla cada etapa del ciclo de producción." action="Nueva solicitud" onAction={onCreate} /><div className="admin-toolbar"><label className="search-field"><Search size={16} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar por cliente, evento o ID" /></label><label className="filter-select"><Filter size={15} /><select value={status} onChange={(event) => setStatus(event.target.value as typeof status)}><option value="ALL">Todos los estados</option>{Object.entries(statusLabels).map(([key, label]) => <option key={key} value={key}>{label}</option>)}</select></label></div><div className="admin-table">{visibleRequests.map((request) => <div className="admin-table-row" key={request.id}><button className="admin-request-link" onClick={() => onSelect(request.id)}><span className="request-icon request-icon-olive"><FileImage size={17} /></span><span><b>{request.clientName}</b><small>{request.eventName} · {request.id}</small></span></button><span className="admin-payment">{request.hasPayment ? "Pago recibido" : "Sin pago"}</span><select value={request.status} onChange={(event) => onStatusChange(request.id, event.target.value as InvitationRequest["status"])} aria-label={`Estado de ${request.id}`}>{Object.entries(statusLabels).map(([key, label]) => <option key={key} value={key}>{label}</option>)}</select><button className="text-button" onClick={() => onSelect(request.id)}>Detalle <ArrowUpRight size={14} /></button></div>)}{visibleRequests.length === 0 && <div className="empty-state">No hay solicitudes que coincidan.</div>}</div></section>;
+}
+
+function AdminSectionHeader({ eyebrow, title, copy, action, onAction }: { eyebrow: string; title: string; copy: string; action: string; onAction: () => void }) {
+  return <div className="admin-section-heading"><div><p className="eyebrow">{eyebrow}</p><h1>{title}</h1><p className="heading-copy">{copy}</p></div><button className="primary-button" onClick={onAction}><Plus size={17} /> {action}</button></div>;
+}
+
 function StatusBadge({ status }: { status: InvitationRequest["status"] }) {
   return (
     <span className={`status status-${status.toLowerCase()}`}>

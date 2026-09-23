@@ -8,10 +8,10 @@ export const templates: TemplateDefinition[] = [
 ]
 
 export const requests: InvitationRequest[] = [
-  { id: 'REQ-1048', clientName: 'Mariana y Tomás', eventName: 'Celebración de boda', eventType: 'Boda', templateId: 'nocturne', status: 'REVIEW', createdAt: '18 sep 2026', dueDate: '26 sep 2026', hasPayment: true, slug: 'mariana-tomas' },
+  { id: 'REQ-1048', clientName: 'Mariana y Tomás', eventName: 'Celebración de boda', eventType: 'Boda', templateId: 'nocturne', status: 'REVIEW', createdAt: '18 sep 2026', dueDate: '26 sep 2026', hasPayment: true, slug: 'mariana-tomas', eventDate: '26 de octubre de 2026', eventTime: '19:30 horas', venue: 'Espacio Magnolia', address: 'Av. del Parque 1840', mapUrl: 'https://maps.google.com/?q=Espacio+Magnolia', description: 'Hay momentos que merecen ser compartidos. Nos encantaría celebrar esta noche junto a vos.', giftAlias: 'mariana.tomas' },
   { id: 'REQ-1047', clientName: 'Valentina Ríos', eventName: 'Mis 15', eventType: '15 años', templateId: 'atelier', status: 'IN_PRODUCTION', createdAt: '17 sep 2026', dueDate: '30 sep 2026', hasPayment: true },
   { id: 'REQ-1046', clientName: 'Lucía Fernández', eventName: 'Baby shower', eventType: 'Baby shower', templateId: 'florence', status: 'WAITING_INFORMATION', createdAt: '16 sep 2026', dueDate: '04 oct 2026', hasPayment: true },
-  { id: 'REQ-1045', clientName: 'Facundo Molina', eventName: 'Cumple 40', eventType: 'Cumpleaños', templateId: 'sol', status: 'PUBLISHED', createdAt: '14 sep 2026', dueDate: '20 sep 2026', hasPayment: true, slug: 'facundo-40' },
+  { id: 'REQ-1045', clientName: 'Facundo Molina', eventName: 'Cumple 40', eventType: 'Cumpleaños', templateId: 'sol', status: 'PUBLISHED', createdAt: '14 sep 2026', dueDate: '20 sep 2026', hasPayment: true, slug: 'facundo-40', eventDate: '20 de septiembre de 2026', eventTime: '21:00 horas', venue: 'Casa del Lago', address: 'Ruta Provincial 4, km 12', mapUrl: 'https://maps.google.com/?q=Casa+del+Lago', description: 'Una noche para celebrar la vida, los encuentros y todo lo que viene.', giftAlias: 'facundo.cumple' },
 ]
 
 export const statusLabels: Record<InvitationRequest['status'], string> = {
